@@ -18,11 +18,11 @@ const getContact = createAsyncThunk(
 
 const addContact = createAsyncThunk(
   'contacts/addContacts',
-  async ({ name, phone }, thunkAPI) => {
+  async ({ name, number }, thunkAPI) => {
     try {
       const response = await axios.post('contacts', {
         name,
-        phone,
+        number,
       });
       return response.data;
     } catch (error) {
