@@ -4,33 +4,21 @@ import Filter from '../Filter/Filter';
 import ContactList from '../ContactList/ContactList';
 import { AppContainer, AppWrapper } from './App.styled';
 import { useDispatch, useSelector } from 'react-redux';
-import {
-  setFilter,
-  addContact,
-  setContacts,
-  deleteContacts,
-} from '../../redux/reducers';
-import { nanoid } from 'nanoid';
+import { addContact, getContact, deleteContacts } from '../../redux/operations';
+import { selectContacts, selectFilter } from '../../redux/selectors';
+import { setFilter } from '../../redux/contactsSlice';
 
 const App = () => {
   const dispatch = useDispatch();
-  const contacts = useSelector(state => state.contacts.contacts);
-  const filter = useSelector(state => state.contacts.filter);
+  const contacts = useSelector(selectContacts);
+  const filter = useSelector(selectFilter);
 
   useEffect(() => {
-    const storedContacts = localStorage.getItem('contacts');
-    if (storedContacts) {
-      dispatch(setContacts(JSON.parse(storedContacts)));
-    }
+    dispatch(getContact());
   }, [dispatch]);
-
-  useEffect(() => {
-    localStorage.setItem('contacts', JSON.stringify(contacts));
-  }, [contacts]);
 
   const handleAddContact = ({ name, number }) => {
     const newContact = {
-      id: nanoid(),
       name,
       number,
     };
